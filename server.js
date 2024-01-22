@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const port = 8080
+const port = process.env.PORT || 3000;
 const expressLayouts = require('express-ejs-layouts')
 const requestLogger = require('./middlewares/request_logger')
 const methodOverride = require('method-override')
@@ -37,11 +37,13 @@ app.use(methodOverride('_method'))
 //        |
 app.use(requestLogger)
 //        V
-app.use(session({
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: true
-}))
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "mistyrose",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use(setCurrentUser)
 
